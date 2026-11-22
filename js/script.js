@@ -121,7 +121,136 @@ $(document).ready(function () {
         $('#alert-notifikasi').addClass('d-none').removeClass('show');
     });
 
-    // ===== BLOK ANGGOTA 2: PERHITUNGAN DEADLINE & RENDER KANBAN =====
+    // =========================================================================
+    // BAGIAN 2: PERHITUNGAN DEADLINE, BADGE & RENDER KANBAN (Render Kartu, Statistik & Highlight Deadline)
+    // =========================================================================
+    function hitungSelisihHari(tanggalDeadline) {
+        const hariIni = new Date();
+        hariIni.setHours(0, 0, 0, 0);
+        const target = new Date(tanggalDeadline);
+        target.setHours(0, 0, 0, 0);
+        return Math.ceil((target - hariIni) / (1000 * 60 * 60 * 24));
+    }
+
+    function dapatkanBadgePrioritas(prioritas) {
+        if (prioritas === 'tinggi') {
+            return '<span class="badge rounded-pill badge-prio-tinggi">Tinggi</span>';
+        } else if (prioritas === 'sedang') {
+            return '<span class="badge rounded-pill badge-prio-sedang">Sedang</span>';
+        }
+        return '<span class="badge rounded-pill badge-prio-rendah">Rendah</span>';
+    }
+
+    function renderSemuaTugas() {
+        const kataKunci = $('#search-tugas').val().toLowerCase().trim();
+        const filterPrioritas = $('#filter-prioritas').val();
+        const filterKategori = $('#filter-kategori').val();
+        const urutanDeadline = $('#sort-deadline').val();
+
+        let jmlBelum = 0, jmlSedang = 0, jmlSelesai = 0, jmlOverdue = 0;
+
+        daftarTugas.forEach(function (tugas) {
+            if (tugas.status === 'belum') jmlBelum++;
+            if (tugas.status === 'sedang') jmlSedang++;
+            if (tugas.status === 'selesai') jmlSelesai++;
+            if (hitungSelisihHari(tugas.deadline) < 0 && tugas.status !== 'selesai') {
+                jmlOverdue++;
+            }
+        });
+
+        $('#count-belum, #badge-belum').text(jmlBelum);
+        $('#count-sedang, #badge-sedang').text(jmlSedang);
+        $('#count-selesai, #badge-selesai').text(jmlSelesai);
+        $('#count-overdue').text(jmlOverdue);
+
+        let tugasTersaring = daftarTugas.filter(function (tugas) {
+            const cocokCari = tugas.judul.toLowerCase().includes(kataKunci) ||
+                tugas.deskripsi.toLowerCase().includes(kataKunci);
+            const cocokPrioritas = (filterPrioritas === 'semua') || (tugas.prioritas === filterPrioritas);
+            const cocokKategori = (filterKategori === 'semua') || (tugas.kategori === filterKategori);
+            return cocokCari && cocokPrioritas && cocokKategori;
+        });
+
+        tugasTersaring.sort(function (a, b) {
+            const tglA = new Date(a.deadline);
+            const tglB = new Date(b.deadline);
+            return urutanDeadline === 'terdekat' ? (tglA - tglB) : (tglB - tglA);
+        });
+
+        $('#list-belum').html('');
+        $('#list-sedang').html('');
+        $('#list-selesai').html('');
+
+        tugasTersaring.forEach(function (tugas) {
+            const sisaHari = hitungSelisihHari(tugas.deadline);
+            let classHighlight = '';
+            let labelWaktu = `<small class="text-muted-custom"><i class="bi bi-calendar3 me-1"></i>${escapeHTML(tugas.deadline)}</small>`;
+
+            if (tugas.status !== 'selesai') {
+                if (sisaHari < 0) {
+                    classHighlight = 'task-overdue';
+                    labelWaktu = `<small class="text-danger-soft fw-semibold"><i class="bi bi-exclamation-circle me-1"></i>Lewat (${escapeHTML(tugas.deadline)})</small>`;
+                } else if (sisaHari < 3) {
+                    classHighlight = 'task-urgent';
+                    labelWaktu = `<small class="fw-semibold"><i class="bi bi-clock-history me-1"></i>${sisaHari === 0 ? 'Hari Ini' : sisaHari + ' hari lagi'}</small>`;
+                }
+            }
+
+            let tombolPindah = '';
+            if (tugas.status === 'belum') {
+                tombolPindah = `<button type="button" class="btn btn-next-step btn-pindah" data-id="${tugas.id}" data-next="sedang">Kerjakan &rarr;</button>`;
+            } else if (tugas.status === 'sedang') {
+                tombolPindah = `<button type="button" class="btn btn-next-step btn-pindah" data-id="${tugas.id}" data-next="selesai">Selesai &check;</button>`;
+            } else {
+                tombolPindah = `<span class="badge rounded-pill badge-soft-green">Tuntas</span>`;
+            }
+
+            const safeJudul = escapeHTML(tugas.judul);
+            const safeDeskripsi = escapeHTML(tugas.deskripsi);
+            const safeKategori = escapeHTML(tugas.kategori);
+
+            const kartuHTML = `
+                <div class="card task-card ${classHighlight} mb-3" data-id="${tugas.id}">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="d-flex flex-wrap gap-1">
+                                ${dapatkanBadgePrioritas(tugas.prioritas)}
+                                <span class="badge rounded-pill badge-kategori">${safeKategori}</span>
+                            </div>
+                            <div class="d-flex gap-1">
+                                <button type="button" class="btn btn-card-action btn-edit-inline" data-id="${tugas.id}" title="Edit Langsung"><i class="bi bi-pencil-square"></i></button>
+                                <button type="button" class="btn btn-card-action btn-buka-hapus text-danger-soft" data-id="${tugas.id}" title="Hapus"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="view-mode-${tugas.id}">
+                            <h3 class="h6 fw-bold mb-1">${safeJudul}</h3>
+                            <p class="small text-muted-custom mb-3">${safeDeskripsi}</p>
+                        </div>
+                        <div class="edit-mode-${tugas.id} d-none mb-3">
+                            <input type="text" class="form-control form-control-sm planner-input mb-2 edit-judul-${tugas.id}" value="${safeJudul}">
+                            <textarea class="form-control form-control-sm planner-input mb-2 edit-deskripsi-${tugas.id}" rows="2">${safeDeskripsi}</textarea>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-soft-primary btn-sm btn-simpan-inline" data-id="${tugas.id}">Simpan</button>
+                                <button type="button" class="btn btn-soft-outline btn-sm btn-batal-inline" data-id="${tugas.id}">Batal</button>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                            ${labelWaktu}
+                            ${tombolPindah}
+                        </div>
+                    </div>
+                </div>`;
+
+            $(`#list-${tugas.status}`).append(kartuHTML);
+        });
+
+        $('.kanban-list').each(function () {
+            if ($(this).children().length === 0) {
+                $(this).html('<div class="text-center text-muted-custom small py-5">Belum ada tugas di kolom ini</div>');
+            }
+        });
+    }
+
 
     // ===== BLOK ANGGOTA 3: VALIDASI FORM & MODAL KONFIRMASI HAPUS =====
 
