@@ -253,7 +253,98 @@ $(document).ready(function () {
 
 
     // ===== BLOK ANGGOTA 3: VALIDASI FORM & MODAL KONFIRMASI HAPUS =====
+    function validasiFormTugas() {
+        let valid = true;
+        $('.error-text').text('');
+        $('#form-tambah-tugas .form-control, #form-tambah-tugas .form-select').removeClass('is-invalid');
 
+        const judul = $('#input-judul').val().trim();
+        const deskripsi = $('#input-deskripsi').val().trim();
+        const prioritas = $('#input-prioritas').val();
+        const kategori = $('#input-kategori').val();
+        const deadline = $('#input-deadline').val();
+
+        if (judul.length < 3) {
+            $('#error-judul').text('Judul tugas minimal 3 karakter.');
+            $('#input-judul').addClass('is-invalid');
+            valid = false;
+        }
+
+        if (deskripsi.length < 5) {
+            $('#error-deskripsi').text('Deskripsi tugas minimal 5 karakter.');
+            $('#input-deskripsi').addClass('is-invalid');
+            valid = false;
+        }
+
+        if (!prioritas) {
+            $('#error-prioritas').text('Pilih prioritas.');
+            $('#input-prioritas').addClass('is-invalid');
+            valid = false;
+        }
+
+        if (!kategori) {
+            $('#error-kategori').text('Pilih kategori.');
+            $('#input-kategori').addClass('is-invalid');
+            valid = false;
+        }
+
+        if (!deadline) {
+            $('#error-deadline').text('Deadline wajib diisi.');
+            $('#input-deadline').addClass('is-invalid');
+            valid = false;
+        } else if (hitungSelisihHari(deadline) <= 0) {
+            $('#error-deadline').text('Deadline harus di masa depan.');
+            $('#input-deadline').addClass('is-invalid');
+            valid = false;
+        }
+
+        return valid;
+    }
+
+    $('#form-tambah-tugas').on('submit', function (e) {
+        e.preventDefault();
+        if (!validasiFormTugas()) {
+            tampilkanNotifikasi('Gagal menyimpan: Periksa kembali isian form yang belum sesuai.', 'danger');
+            return;
+        }
+
+        const tugasBaru = {
+            id: Date.now(),
+            judul: $('#input-judul').val().trim(),
+            deskripsi: $('#input-deskripsi').val().trim(),
+            prioritas: $('#input-prioritas').val(),
+            kategori: $('#input-kategori').val(),
+            deadline: $('#input-deadline').val(),
+            status: 'belum'
+        };
+
+        daftarTugas.push(tugasBaru);
+        simpanKeStorage(daftarTugas);
+        renderSemuaTugas();
+
+        $('#form-tambah-tugas')[0].reset();
+        tampilkanNotifikasi('Tugas baru berhasil ditambahkan!', 'success');
+    });
+
+        $(document).on('click', '.btn-buka-hapus', function () {
+        idTugasAkanDihapus = Number($(this).data('id'));
+        const tugas = daftarTugas.find(t => t.id === idTugasAkanDihapus);
+        if (tugas) {
+            $('#nama-tugas-hapus').text(`"${tugas.judul}"`);
+            modalHapus.show();
+        }
+    });
+    
+    $('#btn-konfirmasi-hapus').on('click', function () {
+        if (idTugasAkanDihapus !== null) {
+            daftarTugas = daftarTugas.filter(t => t.id !== idTugasAkanDihapus);
+            simpanKeStorage(daftarTugas);
+            renderSemuaTugas();
+            modalHapus.hide();
+            tampilkanNotifikasi('Tugas telah dihapus.', 'warning');
+            idTugasAkanDihapus = null;
+        }
+    });
     // ===== BLOK ANGGOTA 4: PINDAH STATUS, FILTER/SORT & FITUR BONUS =====
 
 });
