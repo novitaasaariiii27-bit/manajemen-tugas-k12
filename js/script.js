@@ -365,6 +365,39 @@ $(document).ready(function () {
     $('#sort-deadline').on('change', function () {
     renderSemuaTugas();
     });
+
+    // FITUR BONUS: Inline Editing
+$(document).on('click', '.btn-edit-inline', function () {
+    const id = $(this).data('id');
+    $(`.view-mode-${id}`).addClass('d-none');
+    $(`.edit-mode-${id}`).removeClass('d-none');
+});
+
+$(document).on('click', '.btn-batal-inline', function () {
+    const id = $(this).data('id');
+    $(`.edit-mode-${id}`).addClass('d-none');
+    $(`.view-mode-${id}`).removeClass('d-none');
+});
+
+$(document).on('click', '.btn-simpan-inline', function () {
+    const id = Number($(this).data('id'));
+    const judulBaru = $(`.edit-judul-${id}`).val().trim();
+    const deskripsiBaru = $(`.edit-deskripsi-${id}`).val().trim();
+
+    if (judulBaru.length < 3 || deskripsiBaru.length < 5) {
+        tampilkanNotifikasi('Judul minimal 3 karakter dan deskripsi minimal 5 karakter.', 'danger');
+        return;
+    }
+
+    const index = daftarTugas.findIndex(t => t.id === id);
+    if (index !== -1) {
+        daftarTugas[index].judul = judulBaru;
+        daftarTugas[index].deskripsi = deskripsiBaru;
+        simpanKeStorage(daftarTugas);
+        renderSemuaTugas();
+        tampilkanNotifikasi('Perubahan tugas berhasil disimpan!', 'success');
+    }
+    });
     // Render awal: HARUS di baris paling akhir (sementara untuk uji)
     renderSemuaTugas();
 });
