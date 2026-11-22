@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Task Planner K12 - Manajemen Tugas Harian</title>
 
-    <!-- Google Fonts: Lora & Plus Jakarta Sans -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,18 +15,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- jQuery UI CSS (Untuk Fitur Bonus Drag & Drop) -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <!-- CSS Eksternal Kelompok -->
+
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- 1. HEADER & NAVBAR MINIMALIS (HTML5 Semantik) -->
+    <!-- Navbar Utama -->
     <header class="planner-header sticky-top">
         <nav class="navbar navbar-expand-lg py-2 px-3 px-lg-5">
             <div class="container-xl">
                 <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="#">
                     <span class="brand-badge"><i class="bi bi-journal-check"></i></span>
-                    <span class="brand-title">Student Planner <small class="fw-normal opacity-75">K12</small></span>
+                    <span class="brand-title">Student Planner <small class="fw-normal opacity-75"></small></span>
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navPlanner" aria-controls="navPlanner" aria-expanded="false" aria-label="Toggle navigasi">
@@ -37,7 +37,7 @@
                     <ul class="navbar-nav ms-auto align-items-lg-center gap-2 mt-2 mt-lg-0">
                         <li class="nav-item"><a class="nav-link planner-nav-link" href="#ringkasan-statistik">Ringkasan</a></li>
                         <li class="nav-item"><a class="nav-link planner-nav-link" href="#panel-form-tugas">Tambah Tugas</a></li>
-                        <li class="nav-item"><a class="nav-link planner-nav-link" href="#area-kanban">Papan Kanban</a></li>
+                        <li class="nav-item"><a class="nav-link planner-nav-link" href="#area-kanban">Papan Tugas</a></li>
                         <li class="nav-item">
                             <button type="button" id="btn-toggle-tema" class="btn btn-soft-outline btn-sm rounded-pill px-3">
                                 <i class="bi bi-moon-stars me-1" id="ikon-tema"></i>
@@ -49,18 +49,13 @@
                                 <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Demo
                             </button>
                         </li>
-                        <li class="nav-item">
-                            <a href="../index.html" class="btn btn-soft-primary btn-sm rounded-pill px-3 fw-semibold">
-                                <i class="bi bi-house-door me-1"></i> Portal Utama
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-    <!-- 2. MAIN WORKSPACE CONTAINER -->
+    <!-- Konten Utama -->
     <main class="container-xl py-4 py-lg-5 px-3 px-lg-5">
 
         <!-- HERO BANNER -->
@@ -73,10 +68,9 @@
                         <span class="small text-muted-custom ms-2"><i class="bi bi-sparkles me-1"></i>Academic &amp; Daily Task Workspace</span>
                     </div>
                     <h1 class="editorial-heading mb-2">Daily Student Task Planner</h1>
-                    <p class="planner-quote mb-0">
-                        <i class="bi bi-quote me-1"></i>
-                        <em>"Fokus pada langkah kecil setiap hari — kelola prioritas, deadline, dan progres tugas kuliah dengan tenang."</em>
-                    </p>
+                <p class="text-muted-custom mb-0">
+                    Kelola prioritas dan status pengerjaan tugas agar tidak melewati batas waktu.
+                </p>
                 </div>
                 <div class="col-12 col-md-4 text-md-end">
                     <button type="button" class="btn btn-soft-primary rounded-pill px-4 py-2 fw-semibold" data-bs-toggle="collapse" data-bs-target="#collapseFormTugas" aria-expanded="true" aria-controls="collapseFormTugas">
@@ -86,17 +80,17 @@
             </div>
         </section>
 
-        <!-- Alert Notifikasi Dinamis (Bootstrap Alert) -->
+        <!-- Notifikasi Alert Boostrap-->
         <div id="alert-notifikasi" class="alert alert-success alert-dismissible fade d-none rounded-3 mb-4" role="alert">
             <i class="bi bi-info-circle-fill me-2"></i>
             <span id="teks-notifikasi">Pesan sistem</span>
             <button type="button" class="btn-close" id="btn-tutup-alert" aria-label="Tutup"></button>
         </div>
 
-        <!-- SECTION A: COUNTER STATISTIK -->
+        <!-- Ringkasan Statistik Tugas -->
         <section id="ringkasan-statistik" class="mb-4" aria-label="Ringkasan Statistik Tugas">
             <div class="soft-section-bar mb-3">
-                <span><i class="bi bi-bar-chart-line me-2"></i>Overview Status Tugas</span>
+                <span><i class="bi bi-bar-chart-line me-2"></i>Ringkasan Status Tugas</span>
             </div>
 
             <div class="row g-3">
@@ -147,7 +141,7 @@
             </div>
         </section>
 
-        <!-- SECTION B: FORM TAMBAH TUGAS (ASIDE) -->
+        <!-- Form Input Tugas Baru -->
         <aside id="panel-form-tugas" class="mb-4" aria-label="Formulir Tambah Tugas">
             <div class="soft-section-bar d-flex justify-content-between align-items-center mb-3">
                 <span><i class="bi bi-pencil-square me-2"></i>Tambah Tugas Baru</span>
@@ -193,7 +187,7 @@
                                     <div class="error-text text-danger small mt-1" id="error-kategori"></div>
                                 </div>
                                 <div class="col-12 col-sm-4 col-md-3">
-                                    <label for="input-deadline" class="form-label small fw-semibold">Deadline (Masa Depan) *</label>
+                                    <label for="input-deadline" class="form-label small fw-semibold">Deadline</label>
                                     <input type="date" class="form-control planner-input" id="input-deadline" name="deadline" required>
                                     <div class="error-text text-danger small mt-1" id="error-deadline"></div>
                                 </div>
@@ -209,14 +203,14 @@
             </div>
         </aside>
 
-        <!-- SECTION C: FILTER, SEARCH, SORT & PAPAN KANBAN 3 KOLOM -->
+        <!-- Filter & Papan Kanban -->
         <section id="area-kanban" aria-label="Papan Manajemen Tugas">
             <div class="soft-section-bar d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                <span><i class="bi bi-kanban me-2"></i>Assignments &amp; Task Board</span>
+                <span><i class="bi bi-kanban me-2"></i>Papan Tugas</span>
                 <span class="small fw-normal">Seret kartu antar kolom atau klik ikon <i class="bi bi-pencil-square"></i> untuk edit</span>
             </div>
 
-            <!-- Toolbar Pencarian, Filter & Urutkan -->
+            <!-- Bar Pencarian & Filter -->
             <div class="card planner-card mb-4">
                 <div class="card-body p-3">
                     <div class="row g-3 align-items-end">
@@ -254,14 +248,15 @@
 
                     <div class="d-flex flex-wrap gap-2 mt-3 pt-2 border-top small text-muted-custom">
                         <span>Keterangan warna kartu:</span>
-                        <span class="legend-pill legend-urgent">Kuning Lembut = Deadline &lt; 3 Hari</span>
-                        <span class="legend-pill legend-overdue">Merah Lembut = Lewat Deadline</span>
+                        <span class="legend-pill legend-urgent">Kuning = Deadline &lt; 3 Hari</span>
+                        <span class="legend-pill legend-overdue">Merah = Lewat Deadline</span>
                     </div>
                 </div>
             </div>
 
-            <!-- 3 KOLOM KANBAN -->
+            <!-- Kolom Status Tugas -->
             <div class="row g-4">
+                <!-- Kolom Belum Dikerjakan -->
                 <div class="col-12 col-md-4">
                     <div class="kanban-column p-3 rounded-4 h-100">
                         <div class="kanban-col-header d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
@@ -271,6 +266,7 @@
                         <div id="list-belum" class="kanban-list" data-status="belum"></div>
                     </div>
                 </div>
+                <!-- Kolom Sedang Dikerjakan -->
                 <div class="col-12 col-md-4">
                     <div class="kanban-column p-3 rounded-4 h-100">
                         <div class="kanban-col-header d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
@@ -280,6 +276,7 @@
                         <div id="list-sedang" class="kanban-list" data-status="sedang"></div>
                     </div>
                 </div>
+                <!-- Kolom Selesai Dikerjakan -->
                 <div class="col-12 col-md-4">
                     <div class="kanban-column p-3 rounded-4 h-100">
                         <div class="kanban-col-header d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
@@ -293,7 +290,7 @@
         </section>
     </main>
 
-    <!-- 3. MODAL KONFIRMASI HAPUS (Bootstrap Modal) -->
+    <!-- Modal Konfirmasi Hapus -->
     <div class="modal fade" id="modalHapusTugas" tabindex="-1" aria-labelledby="labelModalHapus" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content planner-modal">
@@ -315,11 +312,11 @@
         </div>
     </div>
 
-    <!-- 4. FOOTER (HTML5 Semantik) -->
+    <!-- Footer -->
     <footer class="planner-footer py-4 mt-5 border-top">
         <div class="container-xl d-flex flex-wrap justify-content-between align-items-center gap-2 small text-muted-custom">
-            <span>Student Task Planner K12 &mdash; Sistem Manajemen Tugas Harian</span>
-            <span>UAS Praktikum Pemrograman Web Dasar &copy; 2026</span>
+            <span>Student Task Planner &mdash; Sistem Manajemen Tugas Harian</span>
+            <span>Nova | Tiara | Chayara | Novita &copy; 2026</span>
         </div>
     </footer>
 
