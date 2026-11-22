@@ -361,6 +361,10 @@ $(document).ready(function () {
     $('#filter-prioritas, #filter-kategori').on('change', function () {
     renderSemuaTugas();
     });
+
+    $('#sort-deadline').on('change', function () {
+    renderSemuaTugas();
+    });
     // Render awal: HARUS di baris paling akhir (sementara untuk uji)
     renderSemuaTugas();
 });
