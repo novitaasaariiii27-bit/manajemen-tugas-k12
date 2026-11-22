@@ -346,5 +346,103 @@ $(document).ready(function () {
         }
     });
     // ===== BLOK ANGGOTA 4: PINDAH STATUS, FILTER/SORT & FITUR BONUS =====
+    $(document).on('click', '.btn-pindah', function () {
+    const id = Number($(this).data('id'));
+    const statusBaru = $(this).data('next');
+    const index = daftarTugas.findIndex(t => t.id === id);
+    if (index !== -1) {
+        daftarTugas[index].status = statusBaru;
+        simpanKeStorage(daftarTugas);
+        renderSemuaTugas();
+        tampilkanNotifikasi(`Status tugas diperbarui menjadi "${statusBaru.toUpperCase()}".`, 'success');
+        }
+        });
+    
+    $('#filter-prioritas, #filter-kategori').on('change', function () {
+    renderSemuaTugas();
+    });
 
+    $('#sort-deadline').on('change', function () {
+    renderSemuaTugas();
+    });
+
+    // FITUR BONUS: Inline Editing
+$(document).on('click', '.btn-edit-inline', function () {
+    const id = $(this).data('id');
+    $(`.view-mode-${id}`).addClass('d-none');
+    $(`.edit-mode-${id}`).removeClass('d-none');
+});
+
+$(document).on('click', '.btn-batal-inline', function () {
+    const id = $(this).data('id');
+    $(`.edit-mode-${id}`).addClass('d-none');
+    $(`.view-mode-${id}`).removeClass('d-none');
+});
+
+$(document).on('click', '.btn-simpan-inline', function () {
+    const id = Number($(this).data('id'));
+    const $inputJudul = $(`.edit-judul-${id}`);
+    const $inputDeskripsi = $(`.edit-deskripsi-${id}`);
+    const judulBaru = $inputJudul.val().trim();
+    const deskripsiBaru = $inputDeskripsi.val().trim();
+
+    $inputJudul.removeClass('is-invalid');
+    $inputDeskripsi.removeClass('is-invalid');
+
+    let valid = true;
+    if (judulBaru.length < 3) {
+        $inputJudul.addClass('is-invalid');
+        valid = false;
+    }
+    if (deskripsiBaru.length < 5) {
+        $inputDeskripsi.addClass('is-invalid');
+        valid = false;
+    }
+    if (!valid) {
+        tampilkanNotifikasi('Judul minimal 3 karakter dan deskripsi minimal 5 karakter.', 'danger');
+        return;
+    }
+
+    const index = daftarTugas.findIndex(t => t.id === id);
+    if (index !== -1) {
+        daftarTugas[index].judul = judulBaru;
+        daftarTugas[index].deskripsi = deskripsiBaru;
+        simpanKeStorage(daftarTugas);
+        renderSemuaTugas();
+        tampilkanNotifikasi('Perubahan tugas berhasil disimpan!', 'success');
+        }
+});
+
+$(document).on('input', '[class*="edit-judul-"], [class*="edit-deskripsi-"]', function () {
+    $(this).removeClass('is-invalid');
+});
+
+// FITUR BONUS: Drag and Drop antar kolom (jQuery UI Sortable)
+$('.kanban-list').sortable({
+    connectWith: '.kanban-list',
+    placeholder: 'kanban-placeholder',
+    items: '.task-card',
+    receive: function (event, ui) {
+        const idTugas = Number(ui.item.data('id'));
+        const statusTujuan = $(this).data('status');
+        const index = daftarTugas.findIndex(t => t.id === idTugas);
+        if (index !== -1) {
+            daftarTugas[index].status = statusTujuan;
+            simpanKeStorage(daftarTugas);
+            renderSemuaTugas();
+            tampilkanNotifikasi(`Tugas dipindahkan ke kolom "${statusTujuan.toUpperCase()}".`, 'success');
+        }
+    }
+}).disableSelection();
+
+    // Reset Data Demo
+$('#btn-reset-demo').on('click', function () {
+    daftarTugas = [...dataAwalDefault];
+    simpanKeStorage(daftarTugas);
+    renderSemuaTugas();
+    tampilkanNotifikasi('Data demo berhasil dipulihkan.', 'success');
+});
+
+// Render awal: HARUS di baris paling akhir (sementara untuk uji)
+renderSemuaTugas();
 });
