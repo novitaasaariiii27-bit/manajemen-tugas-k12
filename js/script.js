@@ -357,7 +357,10 @@ $(document).ready(function () {
         tampilkanNotifikasi(`Status tugas diperbarui menjadi "${statusBaru.toUpperCase()}".`, 'success');
         }
         });
-
+    
+    $('#filter-prioritas, #filter-kategori').on('change', function () {
+    renderSemuaTugas();
+    });
     // Render awal: HARUS di baris paling akhir (sementara untuk uji)
     renderSemuaTugas();
 });
