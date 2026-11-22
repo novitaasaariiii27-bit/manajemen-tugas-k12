@@ -334,8 +334,17 @@ $(document).ready(function () {
             modalHapus.show();
         }
     });
-
     
+    $('#btn-konfirmasi-hapus').on('click', function () {
+        if (idTugasAkanDihapus !== null) {
+            daftarTugas = daftarTugas.filter(t => t.id !== idTugasAkanDihapus);
+            simpanKeStorage(daftarTugas);
+            renderSemuaTugas();
+            modalHapus.hide();
+            tampilkanNotifikasi('Tugas telah dihapus.', 'warning');
+            idTugasAkanDihapus = null;
+        }
+    });
     // ===== BLOK ANGGOTA 4: PINDAH STATUS, FILTER/SORT & FITUR BONUS =====
 
 });
