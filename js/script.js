@@ -435,6 +435,14 @@ $('.kanban-list').sortable({
     }
 }).disableSelection();
 
+    // Reset Data Demo
+$('#btn-reset-demo').on('click', function () {
+    daftarTugas = [...dataAwalDefault];
+    simpanKeStorage(daftarTugas);
+    renderSemuaTugas();
+    tampilkanNotifikasi('Data demo berhasil dipulihkan.', 'success');
+});
+
 // Render awal: HARUS di baris paling akhir (sementara untuk uji)
 renderSemuaTugas();
 });
