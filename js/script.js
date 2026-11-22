@@ -300,6 +300,31 @@ $(document).ready(function () {
 
         return valid;
     }
+
+    $('#form-tambah-tugas').on('submit', function (e) {
+        e.preventDefault();
+        if (!validasiFormTugas()) {
+            tampilkanNotifikasi('Gagal menyimpan: Periksa kembali isian form yang belum sesuai.', 'danger');
+            return;
+        }
+
+        const tugasBaru = {
+            id: Date.now(),
+            judul: $('#input-judul').val().trim(),
+            deskripsi: $('#input-deskripsi').val().trim(),
+            prioritas: $('#input-prioritas').val(),
+            kategori: $('#input-kategori').val(),
+            deadline: $('#input-deadline').val(),
+            status: 'belum'
+        };
+
+        daftarTugas.push(tugasBaru);
+        simpanKeStorage(daftarTugas);
+        renderSemuaTugas();
+
+        $('#form-tambah-tugas')[0].reset();
+        tampilkanNotifikasi('Tugas baru berhasil ditambahkan!', 'success');
+    });
     // ===== BLOK ANGGOTA 4: PINDAH STATUS, FILTER/SORT & FITUR BONUS =====
 
 });
