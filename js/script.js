@@ -325,6 +325,17 @@ $(document).ready(function () {
         $('#form-tambah-tugas')[0].reset();
         tampilkanNotifikasi('Tugas baru berhasil ditambahkan!', 'success');
     });
+
+        $(document).on('click', '.btn-buka-hapus', function () {
+        idTugasAkanDihapus = Number($(this).data('id'));
+        const tugas = daftarTugas.find(t => t.id === idTugasAkanDihapus);
+        if (tugas) {
+            $('#nama-tugas-hapus').text(`"${tugas.judul}"`);
+            modalHapus.show();
+        }
+    });
+
+    
     // ===== BLOK ANGGOTA 4: PINDAH STATUS, FILTER/SORT & FITUR BONUS =====
 
 });
