@@ -417,6 +417,24 @@ $(document).on('input', '[class*="edit-judul-"], [class*="edit-deskripsi-"]', fu
     $(this).removeClass('is-invalid');
 });
 
+// FITUR BONUS: Drag and Drop antar kolom (jQuery UI Sortable)
+$('.kanban-list').sortable({
+    connectWith: '.kanban-list',
+    placeholder: 'kanban-placeholder',
+    items: '.task-card',
+    receive: function (event, ui) {
+        const idTugas = Number(ui.item.data('id'));
+        const statusTujuan = $(this).data('status');
+        const index = daftarTugas.findIndex(t => t.id === idTugas);
+        if (index !== -1) {
+            daftarTugas[index].status = statusTujuan;
+            simpanKeStorage(daftarTugas);
+            renderSemuaTugas();
+            tampilkanNotifikasi(`Tugas dipindahkan ke kolom "${statusTujuan.toUpperCase()}".`, 'success');
+        }
+    }
+}).disableSelection();
+
 // Render awal: HARUS di baris paling akhir (sementara untuk uji)
 renderSemuaTugas();
 });
