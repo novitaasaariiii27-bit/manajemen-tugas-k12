@@ -15,9 +15,9 @@ Aplikasi manajemen tugas harian berbasis web (*Daily Student Task Planner*) deng
 | Modul | PIC | Ruang Lingkup Fitur | Penguji (Peer Review) | Status |
 | :--- | :--- | :--- | :--- | :--- |
 | **Modul 1** | **Novita (Lead)** | Struktur folder, HTML5 semantik (`index.html`), pengaturan Mode Gelap/Terang, data demo awal, & persistensi `localStorage` (`js/script.js` Bagian 0 & 1) | Anggota 4 | **Selesai** |
-| **Modul 2** | **Anggota 2** | Desain *Soft Aesthetic Planner* & variabel *Dark Mode* (`css/style.css`), responsivitas (`375px–1440px`), render kartu Kanban, badge prioritas, & statistik (`js/script.js` Bagian 2) | Novita (Lead) | Dalam Pengerjaan |
-| **Modul 3** | **Anggota 3** | Validasi formulir tambah tugas (*HTML5 + jQuery*), validasi *deadline* masa depan, & fitur hapus tugas dengan Bootstrap Modal (`js/script.js` Bagian 3) | Anggota 2 | Menunggu |
-| **Modul 4** | **Anggota 4** | Perpindahan status (`Kerjakan` / `Selesai`), pencarian *real-time*, filter prioritas & kategori, urutkan *deadline*, serta fitur bonus *Drag & Drop* & *Inline Editing* (`js/script.js` Bagian 4) | Anggota 3 | Menunggu |
+| **Modul 2** | **Anggota 2** | Desain *Soft Aesthetic Planner* & variabel *Dark Mode* (`css/style.css`), responsivitas (`375px–1440px`), render kartu Kanban, badge prioritas, & statistik (`js/script.js` Bagian 2) | Novita (Lead) | **Selesai** |
+| **Modul 3** | **Anggota 3** | Validasi formulir tambah tugas (*HTML5 + jQuery*), validasi *deadline* masa depan, & fitur hapus tugas dengan Bootstrap Modal (`js/script.js` Bagian 3) | Anggota 2 | **Selesai** |
+| **Modul 4** | **Anggota 4** | Perpindahan status (`Kerjakan` / `Selesai`), pencarian *real-time*, filter prioritas & kategori, urutkan *deadline*, serta fitur bonus *Drag & Drop* & *Inline Editing* (`js/script.js` Bagian 4) | Anggota 3 | **Selesai** |
 
 ## 3. Arsitektur Folder & Skema Data
 
