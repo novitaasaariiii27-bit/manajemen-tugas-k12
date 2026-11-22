@@ -346,5 +346,18 @@ $(document).ready(function () {
         }
     });
     // ===== BLOK ANGGOTA 4: PINDAH STATUS, FILTER/SORT & FITUR BONUS =====
+    $(document).on('click', '.btn-pindah', function () {
+    const id = Number($(this).data('id'));
+    const statusBaru = $(this).data('next');
+    const index = daftarTugas.findIndex(t => t.id === id);
+    if (index !== -1) {
+        daftarTugas[index].status = statusBaru;
+        simpanKeStorage(daftarTugas);
+        renderSemuaTugas();
+        tampilkanNotifikasi(`Status tugas diperbarui menjadi "${statusBaru.toUpperCase()}".`, 'success');
+        }
+        });
 
+    // Render awal: HARUS di baris paling akhir (sementara untuk uji)
+    renderSemuaTugas();
 });
